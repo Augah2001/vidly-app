@@ -4,10 +4,11 @@ const validateRental = require("../../models/Rentals/rentals.js");
 const express = require("express");
 const { Customer } = require("../../models/Customers/Customers.js");
 const { Movie } = require("../../models/Movies/movies.js");
-const fawn = require('fawn')
+const mongoose = require('mongoose')
+
 
 const Router = express.Router();
-fawn.init(mongoose)
+
 
 Router.get("/", async (req, res) => {
   const rental = await Rental.find().sort("-dateOut");
