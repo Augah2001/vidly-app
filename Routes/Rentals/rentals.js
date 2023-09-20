@@ -37,7 +37,23 @@ Router.post("/", async (req, res) => {
 
     }
   })
-   await rental.save()
+   const session = await mongoose.startSession();
+
+   try {
+      session.startTransaction();
+      const result = await rental.save({session});
+      await movie.updateOne({$inc : {numberInStock: -1}}, {session});
+      session.commitTransaction();
+      res.send(result)
+      
+   } catch (error) {
+      console.log(error.message);
+      session.abortTransaction();
+    
+   } finally {
+    session.endSession();
+   }
+
     
 
 });
