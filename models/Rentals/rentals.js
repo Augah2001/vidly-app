@@ -54,28 +54,12 @@ const validate = (rental) => {
     movieId: Joi.string().required(),
   });
 
-  schema.validate(rental);
+  return schema.validate(rental);
 };
 
 exports.validateRental = validate;
 exports.Rental = Rental;
 
-// const newSchema = new mongoose.Schema({
-//   customer: {
-//     type: {
-//       name: {
-//         type: String,
-//         required: true,
-//         trim: true,
-//         minLength: 3,
-//         maxLength: 255,
-//       },
-//       phone: { type: Number, required: true, min: 10 },
-//       isGold: {
-//         type: Boolean,
-//         required: true,
-//         default: false,
-//       },
-//     },
-//   },
-// });
+
+
+

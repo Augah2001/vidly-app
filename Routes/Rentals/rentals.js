@@ -1,10 +1,11 @@
 const Joi = require("joi");
 const { Rental } = require("../../models/Rentals/rentals.js");
-const validateRental = require("../../models/Rentals/rentals.js");
+const {validateRental} = require("../../models/Rentals/rentals.js");
 const express = require("express");
 const { Customer } = require("../../models/Customers/Customers.js");
 const { Movie } = require("../../models/Movies/movies.js");
 const mongoose = require('mongoose')
+
 
 
 const Router = express.Router();
@@ -18,11 +19,13 @@ Router.get("/", async (req, res) => {
 
 Router.post("/", async (req, res) => {
   const { error } = validateRental(req.body);
-  if (error) return res.status(400).send("invalid Request");
-  const customer = Customer.findById(req.body.customerId);
-  if (!customer) return res.status(400).send("Invalid Request");
-  const movie = Movie.findById(req.body.movieId);
-  if (!movie) return res.status(400).send("Invalid Request");
+  if (error) return res.status(400).send(error.message);
+
+  try {
+    const customer = await Customer.findById(req.body.customerId);
+  if (!customer) return res.status(404).send("invalid request");
+  const movie =await Movie.findById(req.body.movieId);
+  if (!movie) return res.status(404).send("invalid request");
 
   const rental = new Rental({
     customer: {
@@ -38,23 +41,40 @@ Router.post("/", async (req, res) => {
 
     }
   })
-   const session = await mongoose.startSession();
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
    try {
-      session.startTransaction();
+      
       const result = await rental.save({session});
       await movie.updateOne({$inc : {numberInStock: -1}}, {session});
-      session.commitTransaction();
+      await session.commitTransaction();
       res.send(result)
       
    } catch (error) {
       console.log(error.message);
-      session.abortTransaction();
+       await session.abortTransaction();
+      res.status(400).send('Transaction aborted')
+      
     
    } finally {
     session.endSession();
    }
+  } catch (error){
+    console.error(error.message)
+    res.status(500).send('internal server error')
+  }
+  
+   
 
     
 
 });
+
+
+
+
+
+
+module.exports = Router;
