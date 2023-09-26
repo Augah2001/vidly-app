@@ -17,15 +17,23 @@ Router.get("/", async (req, res) => {
   res.send(rental);
 });
 
+Router.get("/:id", async (req, res) => {
+  const rental = await Rental.findById(req.params.id);
+  if (!rental) return res.status(404).send("Rental not found");
+  res.send(rental);
+});
+
+
+
 Router.post("/", async (req, res) => {
   const { error } = validateRental(req.body);
   if (error) return res.status(400).send(error.message);
 
   try {
     const customer = await Customer.findById(req.body.customerId);
-  if (!customer) return res.status(404).send("invalid request");
+  if (!customer) return res.status(404).send("customer not found");
   const movie =await Movie.findById(req.body.movieId);
-  if (!movie) return res.status(404).send("invalid request");
+  if (!movie) return res.status(404).send("movie not found");
 
   const rental = new Rental({
     customer: {
@@ -72,6 +80,25 @@ Router.post("/", async (req, res) => {
 
 });
 
+
+Router.put("/:id", async (req, res) => {
+   
+  const { error } = validateRental(req.body);
+  if (error) return res.send(error.message);
+
+  const rental = await Rental.findByIdAndUpdate(req.params.id, req.body, {new:true})
+
+  if (!rental) return res.status(404).send('Rental not found')
+   
+
+  res.send(rental);
+});
+
+Router.delete("/:id", async (req, res) => {
+  const rental = await Rental.findByIdAndDelete(req.params.id);
+  if (!rental) return res.status(404).send("Rental not found");
+  res.send(rental);
+});
 
 
 
