@@ -5,6 +5,8 @@ const Customers = require('./Routes/Customers/Customers.js')
 const Movies = require('./Routes/Movies/movies.js')
 const Rentals = require('./Routes/Rentals/rentals.js')
 const Users = require('./Routes/Users/users.js')
+const Auth = require('./Routes/Auth/auth.js')
+
 
 const mongoose = require("mongoose");
 
@@ -28,6 +30,7 @@ app.use("/api/customers", Customers)
 app.use('/api/movies', Movies)
 app.use('/api/rentals', Rentals)
 app.use('/api/users', Users)
+app.use('/api/auth', Auth)
 
 
 app.listen(2000, () => {
