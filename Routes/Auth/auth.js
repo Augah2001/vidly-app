@@ -1,3 +1,5 @@
+require('dotenv').config({path:'config.env'})
+const config = require('config')
 const jwt = require('jsonwebtoken')
 const Joi = require('joi');
 const express = require('express');
@@ -18,16 +20,13 @@ Router.post('/', async (req,res) => {
     console.log(validPassword)
     if (!validPassword) return res.status(400).json({message: "invalid username or password"})
 
-    try {
-        const token =  await jwt.sign({_id: user._id}, 'mysecret')
-        console.log(token)
+
+    const token =  jwt.sign({_id: user._id}, config.get('jwtPrivateKey'))
+    console.log(config.get('jwtPrivateKey'))
+    res.send('done')
         
      
-    } catch (error) {
-        console.log(error)
-    } finally {
-        res.send('wadii')
-    }
+    
 
      
 
@@ -52,5 +51,7 @@ const validate = (request) => {
     return schema.validate(request)
     
 }
+
+
 
 module.exports = Router

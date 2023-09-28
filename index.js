@@ -6,7 +6,7 @@ const Movies = require('./Routes/Movies/movies.js')
 const Rentals = require('./Routes/Rentals/rentals.js')
 const Users = require('./Routes/Users/users.js')
 const Auth = require('./Routes/Auth/auth.js')
-
+const config = require('config')
 
 const mongoose = require("mongoose");
 
@@ -32,7 +32,12 @@ app.use('/api/rentals', Rentals)
 app.use('/api/users', Users)
 app.use('/api/auth', Auth)
 
+if (!config.get("jwtPrivateKey")) {
+  console.error('fatal error: jwtPrivatekey is not defined')
+  process.exit(1)
+}
 
-app.listen(2000, () => {
-  console.log("listening to port 2000");
+
+app.listen(config.get('PORT'), () => {
+  console.log(`listening to port ${config.get('PORT')}`);
 });
