@@ -5,8 +5,8 @@ const Joi = require('joi');
 const express = require('express');
 const Router = express.Router();
 const bcrypt = require('bcrypt')
-const {User} = require('../../models/Users/Users')
-const auth = require("../../middleware/auth")
+const {User} = require('../models/Users')
+const auth = require("../middleware/auth")
 
 
 

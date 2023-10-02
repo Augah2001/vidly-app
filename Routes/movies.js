@@ -1,8 +1,8 @@
 const express = require("express");
-const { validateMovie } = require("../../models/Movies/movies.js");
-const { Movie } = require("../../models/Movies/movies.js");
-const { Genre } = require("../../models/Genres/Genres.js");
-const auth = require("../../middleware/auth")
+const { validateMovie } = require("../models/movies.js");
+const { Movie } = require("../models/movies.js");
+const { Genre } = require("../models/Genres.js");
+const auth = require("../middleware/auth.js")
 
 const Router = express.Router();
 

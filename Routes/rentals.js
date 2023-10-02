@@ -1,9 +1,9 @@
-const auth = require("../../middleware/auth")
-const { Rental } = require("../../models/Rentals/rentals.js");
-const {validateRental} = require("../../models/Rentals/rentals.js");
+const auth = require("../middleware/auth")
+const { Rental } = require("../models/rentals.js");
+const {validateRental} = require("../models/rentals.js");
 const express = require("express");
-const { Customer } = require("../../models/Customers/Customers.js");
-const { Movie } = require("../../models/Movies/movies.js");
+const { Customer } = require("../models/Customers.js");
+const { Movie } = require("../models/movies.js");
 const mongoose = require('mongoose')
 
 

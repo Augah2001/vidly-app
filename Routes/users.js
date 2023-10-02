@@ -1,7 +1,7 @@
-const auth = require('../../middleware/auth')
+const auth = require('../middleware/auth')
 const _ = require('lodash');
-const {User} = require('../../models/Users/Users.js');
-const {validateUser} = require('../../models/Users/Users.js')
+const {User} = require('../models/Users.js');
+const {validateUser} = require('../models/Users.js')
 const express = require('express');
 const Router = express.Router();
 const bcrypt = require('bcrypt')
@@ -16,10 +16,10 @@ Router.get('/', async (_,res) => {
 })
 
 Router.get('/:id', async (req,res) => {
-//     const user = await User.findById(req.params.id)
-//     if (!user) return res.status(400).json({message: 'No user found'})
-//     res.status(200).json(user)
-       res.send(req.user)
+    const user = await User.findById(req.params.id)
+    if (!user) return res.status(400).json({message: 'No user found'})
+    res.status(200).json(user)
+       
  })
 
 Router.post('/',auth ,async (req,res) => {

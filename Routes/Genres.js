@@ -1,7 +1,7 @@
 const express = require("express");
-const {Genre, validateGenre} = require('../../models/Genres/Genres.js')
+const {Genre, validateGenre} = require('../models/Genres.js')
 const Router = express.Router();
-const auth = require("../../middleware/auth")
+const auth = require("../middleware/auth.js")
 
 Router.get("/:id", async (req, res) => {
   try {
