@@ -12,7 +12,7 @@ const auth = require("../middleware/auth")
 
 
 
-Router.post('/',auth,  async (req,res) => {
+Router.post('/', async (req,res) => {
     const {error} = validate(req.body)
     if (error) return res.status(400).json({message: error.message})
     let user = await User.findOne({email: req.body.email})

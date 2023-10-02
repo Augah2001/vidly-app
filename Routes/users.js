@@ -6,6 +6,14 @@ const express = require('express');
 const Router = express.Router();
 const bcrypt = require('bcrypt')
 
+Router.get('/me', auth, async (req,res) => {
+
+    const user = await User.findById(req.user._id).select('-password')
+    res.json(user)
+
+
+})
+
 
 Router.get('/', async (_,res) => {
 
@@ -22,7 +30,7 @@ Router.get('/:id', async (req,res) => {
        
  })
 
-Router.post('/',auth ,async (req,res) => {
+Router.post('/', async (req,res) => {
     const {error} = validateUser(req.body)
     if (error) return res.status(400).json({message: error.message})
     let user = await User.findOne({email: req.body.email})
