@@ -11,7 +11,8 @@ module.exports = (req,res,next) => {
     try {
         const decoded = jwt.verify(token, config.get("jwtPrivateKey"))
         req.user = decoded
-        console.log('auth')
+        console.log(req.user.isAdmin)
+        
         next()
     } catch (ex) {
         res.status(400).json({message: "Invalid token"})

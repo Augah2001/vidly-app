@@ -2,7 +2,7 @@ const express = require("express");
 const { validateMovie } = require("../models/movies.js");
 const { Movie } = require("../models/movies.js");
 const { Genre } = require("../models/Genres.js");
-const auth = require("../middleware/auth.js")
+const auth = require("../middleware/authorize.js")
 
 const Router = express.Router();
 

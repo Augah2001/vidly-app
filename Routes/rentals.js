@@ -1,4 +1,4 @@
-const auth = require("../middleware/auth")
+const auth = require("../middleware/authorize")
 const { Rental } = require("../models/rentals.js");
 const {validateRental} = require("../models/rentals.js");
 const express = require("express");
