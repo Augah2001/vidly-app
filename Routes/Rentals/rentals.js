@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const auth = require("../../middleware/auth")
 const { Rental } = require("../../models/Rentals/rentals.js");
 const {validateRental} = require("../../models/Rentals/rentals.js");
 const express = require("express");
@@ -25,7 +25,7 @@ Router.get("/:id", async (req, res) => {
 
 
 
-Router.post("/", async (req, res) => {
+Router.post("/", auth, async (req, res) => {
   const { error } = validateRental(req.body);
   if (error) return res.status(400).send(error.message);
 
@@ -81,7 +81,7 @@ Router.post("/", async (req, res) => {
 });
 
 
-Router.put("/:id", async (req, res) => {
+Router.put("/:id", auth,async (req, res) => {
    
   const { error } = validateRental(req.body);
   if (error) return res.send(error.message);
@@ -94,7 +94,7 @@ Router.put("/:id", async (req, res) => {
   res.send(rental);
 });
 
-Router.delete("/:id", async (req, res) => {
+Router.delete("/:id",auth, async (req, res) => {
   const rental = await Rental.findByIdAndDelete(req.params.id);
   if (!rental) return res.status(404).send("Rental not found");
   res.send(rental);

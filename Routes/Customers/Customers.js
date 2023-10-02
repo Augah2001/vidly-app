@@ -1,5 +1,6 @@
 const express = require('express')
 const {Customer, validate} = require('../../models/Customers/Customers.js')
+const auth = require("../../middleware/auth")
 
 const Router = express.Router()
 
@@ -12,7 +13,7 @@ Router.get('/', async (req,res) => {
     res.send(customers)
 })
 
-Router.get('/:id', async (req,res) => {
+Router.get('/:id',async (req,res) => {
     
     try {
         const customer = await Customer.findById(req.params.id)
@@ -25,7 +26,7 @@ Router.get('/:id', async (req,res) => {
 
 })
 
-Router.post('/', async (req,res) => {
+Router.post('/', auth,async (req,res) => {
     const {error} = validate(req.body)
     if (error) return  res.send(error.message)
 
@@ -38,7 +39,7 @@ Router.post('/', async (req,res) => {
     customer = await customer.save()
     res.send(customer)
 
-Router.put('/:id', async (req, res) => {
+Router.put('/:id', auth,async (req, res) => {
 
     const {error} = validate(req.body)
     if (error) return res.send(error.message)
@@ -63,7 +64,7 @@ Router.put('/:id', async (req, res) => {
 })
 
 
-Router.delete('/:id', async (req,res) => {
+Router.delete('/:id', auth,async (req,res) => {
 
     try {
         const customer = await Customer.findByIdAndDelete(req.params.id);

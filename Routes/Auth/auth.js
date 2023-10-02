@@ -6,11 +6,13 @@ const express = require('express');
 const Router = express.Router();
 const bcrypt = require('bcrypt')
 const {User} = require('../../models/Users/Users')
+const auth = require("../../middleware/auth")
 
 
 
 
-Router.post('/', async (req,res) => {
+
+Router.post('/',auth,  async (req,res) => {
     const {error} = validate(req.body)
     if (error) return res.status(400).json({message: error.message})
     let user = await User.findOne({email: req.body.email})
@@ -21,9 +23,9 @@ Router.post('/', async (req,res) => {
     if (!validPassword) return res.status(400).json({message: "invalid username or password"})
 
 
-    const token =  jwt.sign({_id: user._id}, config.get('jwtPrivateKey'))
+    const token = user.generateAuthToken()
     console.log(config.get('jwtPrivateKey'))
-    res.send('done')
+    res.send(token)
         
      
     
