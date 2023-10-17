@@ -9,6 +9,7 @@ const Auth = require('./Routes/auth.js')
 const config = require('config')
 
 const mongoose = require("mongoose");
+const error = require("./middleware/error.js");
 
 mongoose
   .connect("mongodb://127.0.0.1:5000/vidly", { useNewUrlParser: true, useUnifiedTopology: true})
@@ -31,6 +32,8 @@ app.use('/api/movies', Movies)
 app.use('/api/rentals', Rentals)
 app.use('/api/users', Users)
 app.use('/api/auth', Auth)
+
+app.use(error)
 
 if (!config.get("jwtPrivateKey")) {
   console.error('fatal error: jwtPrivatekey is not defined')
