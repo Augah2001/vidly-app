@@ -7,9 +7,32 @@ const Rentals = require('./Routes/rentals.js')
 const Users = require('./Routes/users.js')
 const Auth = require('./Routes/auth.js')
 const config = require('config')
+const winston = require('winston')
+
+
+const {logger} = require('./middleware/error.js')
+
+
+
+process.on('uncaughtException', (error)=> {
+  logger.error(error.message, error)
+  console.log('we got an exception')
+
+})
+
+process.on('unhandledRejection', (error)=> {
+  logger.error(error.message, error)
+  console.log('unhandled rejection')
+})
+
+
 
 const mongoose = require("mongoose");
-const error = require("./middleware/error.js");
+const {error} = require("./middleware/error.js");
+
+
+const p = Promise.reject(new Error('something went wrong'))
+p.then(()=> {})
 
 mongoose
   .connect("mongodb://127.0.0.1:5000/vidly", { useNewUrlParser: true, useUnifiedTopology: true})
@@ -44,3 +67,4 @@ if (!config.get("jwtPrivateKey")) {
 app.listen(config.get('PORT'), () => {
   console.log(`listening to port ${config.get('PORT')}`);
 });
+module.exports.logger = logger
